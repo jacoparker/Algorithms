@@ -1,0 +1,10 @@
+gameboy 5 80
+laptop 25 150
+pencil 1 1
+notebook 3 5
+shirt 2 10
+headphones 12 125
+charger 3 15
+waterbottle 3 8
+umbrella 2 5
+muffin 2 3
