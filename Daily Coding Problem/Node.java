@@ -1,12 +1,16 @@
-class Node<E> {
+class Node<E extends Comparable<E>> {
     private E val;
-    private Node right;
-    private Node left;
+    private Node<E> right;
+    private Node<E> left;
 
-    Node(E val, Node right, Node left) {
+    Node(E val, Node<E> right, Node<E> left) {
         this.val = val;
         this.right = right;
         this.left = left;
+    }
+
+    Node(E val) {
+        this(val, null, null);
     }
 
     Node() {
@@ -17,11 +21,11 @@ class Node<E> {
 
     /*** Getters ***/
 
-    public Node getRightChild() {
+    public Node<E> getRightChild() {
         return this.right;
     }
 
-    public Node getLeftChild() {
+    public Node<E> getLeftChild() {
         return this.left;
     }
 
@@ -35,11 +39,11 @@ class Node<E> {
         this.val = val;
     }
 
-    public void setLeftChild(Node left) {
+    public void setLeftChild(Node<E> left) {
         this.left = left;
     }
 
-    public void setRightChild(Node right) {
+    public void setRightChild(Node<E> right) {
         this.right = right;
     }
 }
