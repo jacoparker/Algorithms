@@ -6,31 +6,60 @@
 
 import java.util.Scanner;
 import java.util.Arrays;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.HashSet;
+import java.util.ArrayList;
 
 
 public class problem1 {
 
-    private static int[] parse(String filename) {
+    private static Scanner scnr = null;
+
+    private static HashSet<Integer> parse_single(String filename) {
         File file = new File(filename);
-        Scanner scnr = new Scanner(file);
-        int values[] = new int[10];
-        int index = 0;
-        while (scnr.hasNext()) {
-            String line = scnr.getLine();
-            if (index == values.length) {
-                int tmp[] = new int[index*2];
-                System.arraycopy(values, 0, tmp, 0, values.length);
-                values = tmp;
+        try {
+            Scanner scnr = new Scanner(file);
+            HashSet<Integer> values = new HashSet<Integer>();  
+            while (scnr.hasNext()) {
+                int next = scnr.nextInt();
+                values.add(next);  // assume for now that we do not have duplicates
             }
-            int tmp = Integer.parseInt(line);  // assume data is good and does not need further processing
-            values[index++] = tmp;
+            scnr.close();
+            return values;
+        } catch (FileNotFoundException e) {
+            System.out.println("Could not find that file. Exiting...");
+            System.exit(1);
         }
-        scnr.close();
-        return values;
+        return null;
     }
 
-    public static int[] find_k(int list[], int k) {
+    private static ArrayList<HashSet<Integer>> parse_file() { 
+        if (scnr == null) {
+            System.out.println("Error: scanner must be initialized first. Exiting...");
+            System.exit(1);
+        }
 
+        ArrayList<HashSet<Integer>> data = new ArrayList<HashSet<Integer>>();
+        while (scnr.hasNext()) {
+            String line = scnr.nextLine();
+            HashSet<Integer> set = new HashSet<Integer>();
+            for (String next: line.split(" ")) {
+                int tmp = Integer.parseInt(next);
+                set.add(tmp);
+            }
+            data.add(set);
+        }
+        scnr.close();
+        return data;
+    }
+
+    public static int[] find_k(HashSet<Integer> set, int k) {
+        for (int value: set) {
+            if (k-value != value && set.contains(k - value)) {
+                return new int[]{value, k-value};
+            }
+        }
         return null;
     }
 
@@ -41,15 +70,23 @@ public class problem1 {
         }
 
         int k = Integer.parseInt(args[1]);
-        int values[] = parse(args[0]);
-        for (int value: values) {
-            System.out.println("Value: " + value);
-        }
-        int result[] = find_k(values, k);
-            if (result == null) {
-                System.out.println("Cannot sum to " + k + " with given numbers.");
-            } else {
-                System.out.println("The number " + k + " can be summed using: " + result[0] + " and " + result[1]);
+        // HashSet<Integer> set = parse(args[0]);
+        try {
+            File file_obj = new File(args[0]);
+            scnr = new Scanner(file_obj);
+            ArrayList<HashSet<Integer>> set = parse_file();
+            for (HashSet<Integer> subset: set) {
+                int result[] = find_k(subset, k);
+                if (result == null) {
+                    System.out.println("Cannot sum to " + k + " with given numbers for set " + subset.toString() + ".");
+                } else {
+                    System.out.println("The number " + k + " can be summed with " + subset.toString() + " using: " + result[0] + " and " + result[1]);
+                }
             }
+            scnr.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("Could not open file. Exiting...");
+            System.exit(1);
+        }
     }
 }
