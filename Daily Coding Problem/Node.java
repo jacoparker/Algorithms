@@ -1,4 +1,5 @@
 class Node<E extends Comparable<E>> {
+    
     private E val;
     private Node<E> right;
     private Node<E> left;

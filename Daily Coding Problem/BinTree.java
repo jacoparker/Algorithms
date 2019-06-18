@@ -4,13 +4,13 @@ import java.lang.Math;
 class BinTree<E extends Comparable<E>> {
 
     private Node<E> root;
-    private int height;
 
-    // constructor
-    BinTree(Node<E> root) {
-        this.root = root;
-        this.height = 1;
-    }
+    /*** Constructors ***/
+
+    // default constructor
+    BinTree() { this.root = new Node<E>(); }
+
+    BinTree(Node<E> root) { this.root = root; }
 
     /*** Getters ***/
 
