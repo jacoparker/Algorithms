@@ -11,8 +11,6 @@
 //
 // Hint: Try preprocessing the dictionary into a more efficient data structure to speed up queries.
 
-// TODO add a char to tell whether end of word found
-
 #include <iostream>
 #include <string>
 #include <vector>
@@ -174,7 +172,7 @@ int main(int argc, char *argv[])
     cout << "Printing dictionary of possible words for " << test_w << endl;
     for (auto ans: *result) cout << "word: " << ans << endl;
     cout << endl;
-    
+
     // second set of tests
     string test_w2 ("app");
     result = t->getPossibleWords(test_w2);
